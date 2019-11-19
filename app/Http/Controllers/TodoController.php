@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Todo;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class TodoController extends Controller
 {
@@ -34,9 +35,14 @@ class TodoController extends Controller
      *
      * @param Request $request
      * @return Response
+     * @throws ValidationException
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'text' => 'required|string|max:255',
+        ]);
+
         $todo = Todo::create($request->all());
         return (new Response($todo, 201));
     }
@@ -47,9 +53,14 @@ class TodoController extends Controller
      * @param $id
      * @param Request $request
      * @return Response
+     * @throws ValidationException
      */
     public function update($id, Request $request)
     {
+        $this->validate($request, [
+            'text' => 'required|string|max:255',
+        ]);
+
         $todo = Todo::findOrFail($id);
         $todo->update($request->all());
 
