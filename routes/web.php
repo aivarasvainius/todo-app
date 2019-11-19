@@ -16,9 +16,14 @@ $router->get('/', function () use ($router) {
 });
 
 $router->group(['prefix' => 'api'], function () use ($router) {
-    $router->get('todos',  ['uses' => 'TodoController@index']);
-    $router->get('todos/{id}',  ['uses' => 'TodoController@show']);
-    $router->post('todos',  ['uses' => 'TodoController@store']);
-    $router->put('todos/{id}',  ['uses' => 'TodoController@update']);
-    $router->delete('todos/{id}',  ['uses' => 'TodoController@destroy']);
+
+    $router->post('login', 'AuthController@login');
+
+    $router->group(['prefix' => 'todos'], function () use ($router) {
+        $router->get('',  ['uses' => 'TodoController@index']);
+        $router->get('/{id}',  ['uses' => 'TodoController@show']);
+        $router->post('',  ['uses' => 'TodoController@store']);
+        $router->put('/{id}',  ['uses' => 'TodoController@update']);
+        $router->delete('/{id}',  ['uses' => 'TodoController@destroy']);
+    });
 });
