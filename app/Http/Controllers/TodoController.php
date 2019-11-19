@@ -40,4 +40,19 @@ class TodoController extends Controller
         $todo = Todo::create($request->all());
         return (new Response($todo, 201));
     }
+
+    /**
+     * Update existing resource.
+     *
+     * @param $id
+     * @param Request $request
+     * @return Response
+     */
+    public function update($id, Request $request)
+    {
+        $todo = Todo::findOrFail($id);
+        $todo->update($request->all());
+
+        return (new Response($todo));
+    }
 }
