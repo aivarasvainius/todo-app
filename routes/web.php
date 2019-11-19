@@ -18,4 +18,5 @@ $router->get('/', function () use ($router) {
 $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('todos',  ['uses' => 'TodoController@index']);
     $router->get('todos/{id}',  ['uses' => 'TodoController@show']);
+    $router->post('todos',  ['uses' => 'TodoController@store']);
 });

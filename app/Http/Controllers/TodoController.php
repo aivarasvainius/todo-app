@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Todo;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class TodoController extends Controller
@@ -27,5 +27,17 @@ class TodoController extends Controller
     public function show($id)
     {
         return (new Response(Todo::find($id)));
+    }
+
+    /**
+     * Create a new resource.
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function store(Request $request)
+    {
+        $todo = Todo::create($request->all());
+        return (new Response($todo, 201));
     }
 }
