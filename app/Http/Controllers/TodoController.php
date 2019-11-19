@@ -55,4 +55,16 @@ class TodoController extends Controller
 
         return (new Response($todo));
     }
+
+    /**
+     * Delete existing resource.
+     *
+     * @param $id
+     * @return Response
+     */
+    public function destroy($id)
+    {
+        Todo::findOrFail($id)->delete();
+        return new Response(null, 204);
+    }
 }
