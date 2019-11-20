@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Row, Col } from 'antd';
+import { List, Row, Col, Icon, message } from 'antd';
 import axios from 'axios';
 
 class Todos extends React.Component {
@@ -12,21 +12,21 @@ class Todos extends React.Component {
     }
 
     componentDidMount() {
+        this.setState({loading: true})
         axios.get('http://localhost:8000/api/todos')
             .then(response => {
-                console.log(response);
-                this.setState({data: response.data})
+                this.setState({data: response.data, loading: false})
             })
     }
 
-    generateDataForList(data) {
-        const generatedData = [];
-
-        data.map(item => {
-            return generatedData.push(item.text)
-        })
-
-        return generatedData;
+    handleDelete(id) {
+        axios.delete(`http://localhost:8000/api/todos/${id}`)
+            .then(() => {
+                this.setState(prevState => ({
+                    data: prevState.data.filter(item => item.id !== id)
+                }))
+                message.success('Deleted!')
+            })
     }
 
     render() {
@@ -39,12 +39,18 @@ class Todos extends React.Component {
                     <Row>
                         <Col span={10} offset={7}>
                             <List
+                                loading={loading}
                                 style={{'marginTop': '150px'}}
                                 bordered
-                                dataSource={this.generateDataForList(data)}
+                                dataSource={data}
                                 renderItem={item => (
-                                    <List.Item>
-                                        {item}
+                                    <List.Item
+                                        actions={[
+                                            <a onClick={() => this.handleDelete(item.id)} key="list-delete"><Icon type="delete" /></a>,
+                                            <a key="list-edit"><Icon type="edit" /></a>
+                                        ]}
+                                    >
+                                        {item.text}
                                     </List.Item>
                                 )}
                             />
@@ -54,7 +60,7 @@ class Todos extends React.Component {
             );
         }
 
-        return <div>ss</div>;
+        return null;
     }
 }
 
