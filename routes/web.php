@@ -19,7 +19,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     $router->post('login', 'AuthController@login');
 
-    $router->group(['prefix' => 'todos'], function () use ($router) {
+    $router->group(['prefix' => 'todos', 'middleware' => 'auth'], function () use ($router) {
         $router->get('',  ['uses' => 'TodoController@index']);
         $router->get('/{id}',  ['uses' => 'TodoController@show']);
         $router->post('',  ['uses' => 'TodoController@store']);
